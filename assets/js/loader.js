@@ -8,8 +8,16 @@
     var sub = document.querySelector('.fs-sub');
 
     var GREY = ['#1a1a1a', '#222', '#2d2d2d', '#333', '#3a3a3a', '#282828'];
-    var VIVID = ['#FF2D00', '#FF5500', '#FF9900', '#FFE600', '#00C853', '#1d5961', '#09214f', '#3a2e55', '#CC00FF', '#FF007A', '#FF4081', '#aeaeae'];
-
+    var VIVID = [
+        '#471d17', // red-orange
+        '#c13d05', // strong orange
+        '#9c41009c', // orange
+        '#9b480d', // warm orange
+        '#901919', // red
+        '#c12e3a', // deep red
+        '#8f4f0092', // dark orange
+        '#a47000' // amber
+    ];
     var W, H;
 
     function resize() {
@@ -52,15 +60,25 @@
     }
 
     function lerpColor(a, b, t) {
+        a = a.slice(0, 7);
+        b = b.slice(0, 7);
+
         var ha = parseInt(a.replace('#', ''), 16),
             hb = parseInt(b.replace('#', ''), 16);
+
         var r1 = (ha >> 16) & 255,
             g1 = (ha >> 8) & 255,
             b1 = ha & 255;
+
         var r2 = (hb >> 16) & 255,
             g2 = (hb >> 8) & 255,
             b2 = hb & 255;
-        return 'rgb(' + Math.round(r1 + (r2 - r1) * t) + ',' + Math.round(g1 + (g2 - g1) * t) + ',' + Math.round(b1 + (b2 - b1) * t) + ')';
+
+        return 'rgb(' +
+            Math.round(r1 + (r2 - r1) * t) + ',' +
+            Math.round(g1 + (g2 - g1) * t) + ',' +
+            Math.round(b1 + (b2 - b1) * t) +
+            ')';
     }
 
     var progress = 0,
@@ -106,8 +124,6 @@
         if (colorPhase > 0.05) bar.style.background = 'hsl(' + (progress * 3.6) + ',90%,55%)';
         pctEl.textContent = String(Math.floor(progress)).padStart(3, '0') + '%';
         if (colorPhase > 0.15) {
-            eyebrow.style.color = 'hsl(' + (progress * 2.5) + ',80%,65%)';
-            sub.style.color = 'hsl(' + (progress * 3) + ',80%,60%)';
             pctEl.style.color = 'hsl(' + (progress * 4) + ',90%,60%)';
         }
         if (progress < 100) {

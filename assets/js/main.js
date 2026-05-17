@@ -48,8 +48,8 @@ function aC(el, t, d = 1800) {
 new IntersectionObserver(e => {
     if (e[0].isIntersecting && !cS) {
         cS = true;
-        aC(document.getElementById('cntp'), 80);
-        aC(document.getElementById('cntq'), 4800, 2200)
+        aC(document.getElementById('cntp'), 64);
+        aC(document.getElementById('cntq'), 3800, 2200)
     }
 }, {
     threshold: .4
