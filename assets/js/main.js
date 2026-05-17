@@ -13,9 +13,6 @@ const pitems = [{
 }, {
     p: 'Volksstimme',
     t: 'Graffiti zum Sachsen-Anhalt-Tag — Gemeinschaftsprojekt direkt am Markt.'
-}, {
-    p: 'BILD',
-    t: 'Projekt soll Stadt weit über Landesgrenzen hinaus bekannt machen.'
 }, ];
 const tick = document.getElementById('ticker');
 [...pitems, ...pitems].forEach(i => {
