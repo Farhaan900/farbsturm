@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farbsturm Bernburg – Premium Fassadenkunst Sachsen-Anhalt</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <style>
          :root {
             --gold: #F5A623;
@@ -39,6 +43,117 @@
             line-height: 1.6;
             overflow-x: hidden
         }
+        /* ─── LOADER ─── */
+        
+        #fs-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+        
+        #fs-loader.done {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        #fs-canvas-wrap {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        
+        #fs-splatter {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #fs-logo {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            user-select: none;
+        }
+        
+        #fs-logo .fs-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(10px, 1.8vw, 13px);
+            letter-spacing: 0.45em;
+            color: #555;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            transition: color 1.2s ease;
+        }
+        
+        #fs-logo h1.fs-h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(64px, 14vw, 140px);
+            line-height: 0.9;
+            color: #2a2a2a;
+            letter-spacing: 0.04em;
+            position: relative;
+            margin-bottom: 0;
+        }
+        
+        #fs-logo h1.fs-h1 .fs-grad {
+            position: absolute;
+            inset: 0;
+            background: var(--gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 1;
+            pointer-events: none;
+        }
+        
+        #fs-logo .fs-sub {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(11px, 2vw, 15px);
+            letter-spacing: 0.55em;
+            color: #444;
+            text-transform: uppercase;
+            margin-top: 14px;
+            transition: color 1.2s ease;
+        }
+        
+        #fs-progress-track {
+            position: relative;
+            z-index: 10;
+            margin-top: 48px;
+            width: min(320px, 60vw);
+            height: 2px;
+            background: #222;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        #fs-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #444;
+            border-radius: 2px;
+            transition: width 0.12s linear, background 0.8s ease;
+        }
+        
+        #fs-pct {
+            position: relative;
+            z-index: 10;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            color: #444;
+            margin-top: 14px;
+            transition: color 0.8s ease;
+        }
+        /* ─── END LOADER ─── */
         
          ::-webkit-scrollbar {
             width: 3px
@@ -496,6 +611,7 @@
             justify-content: center;
             padding: clamp(1rem, 3vw, 3rem);
             box-sizing: border-box;
+            overflow: hidden;
         }
         
         .image-wrap {
@@ -715,7 +831,12 @@
         .scd {
             font-size: .82rem;
             color: var(--muted);
-            line-height: 1.65
+            line-height: 1.65;
+            hyphens: auto;
+            -webkit-hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: normal;
         }
         /* BEFORE/AFTER */
         
@@ -1055,7 +1176,8 @@
         .mapstat {
             display: flex;
             gap: 3rem;
-            margin-top: 2.5rem
+            margin-top: 2.5rem;
+            flex-flow: wrap
         }
         
         .ms {
@@ -1971,6 +2093,21 @@
 
 <body>
 
+    <!-- ─── LOADER ─── -->
+    <div id="fs-loader">
+        <div id="fs-canvas-wrap"><canvas id="fs-splatter"></canvas></div>
+        <div id="fs-logo">
+            <div class="fs-eyebrow">Est. Bernburg — Saale</div>
+            <h1 class="fs-h1">FARBSTURM BERNBURG<span class="fs-grad">FARBSTURM BERNBURG</span></h1>
+            <div class="fs-sub">Graffiti &amp; Urban Art</div>
+        </div>
+        <div id="fs-progress-track">
+            <div id="fs-progress-bar"></div>
+        </div>
+        <div id="fs-pct">000%</div>
+    </div>
+
+
     <nav>
         <div class="nb"><b>Farbsturm Bernburg</b><small>Premium Fassadenkunst · Sachsen-Anhalt</small></div>
         <ul class="nl">
@@ -2348,7 +2485,7 @@
                         <div class="cfg"><label>Organisation / Firma</label><input type="text" id="fo" placeholder="Stadtwerke GmbH"></div>
                     </div>
                     <div class="cfr">
-                        <div class="cfg"><label>Telefon / E-Mail</label><input type="text" id="fk" placeholder="+49 ..."></div>
+                        <div class="cfg"><label>E-Mail</label><input type="text" id="fk" placeholder="max@gmail.com"></div>
                         <div class="cfg"><label>Projektstandort</label><input type="text" id="floc" placeholder="Ort / Landkreis"></div>
                     </div>
                     <div class="cfr">
@@ -2369,7 +2506,7 @@
                         <div class="cfg"><label>Geschätzte Fläche (m²)</label><input type="text" id="farea" placeholder="z. B. 80 m²"></div>
                     </div>
                     <div class="cfr full">
-                        <div class="cfg"><label>Projektbeschreibung &amp; Wunschtermin</label><textarea id="fmsg2" placeholder="Was stellen Sie sich vor? Farben, Motiv, Deadline?"></textarea></div>
+                        <div class="cfg"><label>Projektbeschreibung, Wunschtermin &amp; Telephone</label><textarea id="fmsg2" placeholder="Was stellen Sie sich vor? Farben, Motiv, Deadline?"></textarea></div>
                     </div>
                     <div class="cfsub">
                         <span class="cfnote">Wir antworten innerhalb von 24 Stunden — persönlich, direkt, ohne Callcenter.</span>
@@ -2394,6 +2531,8 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/loader.js"></script>
+
 </body>
 
 </html>

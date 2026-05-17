@@ -117,31 +117,51 @@ function updateK(v) {
 }
 updateK(80);
 
-function sendForm() {
+async function sendForm() {
+
     const n = document.getElementById('fn').value.trim();
     const c = document.getElementById('fk').value.trim();
     const m = document.getElementById('fmsg2').value.trim();
+
     if (!n || !c || !m) {
         alert('Bitte füllen Sie mindestens Name, Kontakt und Projektbeschreibung aus.');
-        return
+        return;
     }
-    const r = JSON.parse(localStorage.getItem('fs_r') || '[]');
-    r.push({
+
+    const data = {
         name: n,
         org: document.getElementById('fo').value,
         contact: c,
         loc: document.getElementById('floc').value,
         type: document.getElementById('ftyp').value,
         area: document.getElementById('farea').value,
-        msg: m,
-        date: new Date().toISOString()
-    });
-    localStorage.setItem('fs_r', JSON.stringify(r));
-    const msg = document.getElementById('fmsg');
-    msg.style.display = 'block';
-    ['fn', 'fo', 'fk', 'floc', 'farea', 'fmsg2'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('ftyp').value = '';
-    setTimeout(() => msg.style.display = 'none', 4500);
+        msg: m
+    };
+
+    try {
+
+        const response = await fetch('sendmail.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.text();
+
+        alert(result);
+
+        // clear form
+        ['fn', 'fo', 'fk', 'floc', 'farea', 'fmsg2']
+        .forEach(id => document.getElementById(id).value = '');
+
+        document.getElementById('ftyp').value = '';
+
+    } catch (err) {
+        console.error(err);
+        alert('Fehler beim Senden.');
+    }
 }
 
 // gallery slider
